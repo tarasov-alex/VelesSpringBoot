@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.tarasov.velesBase.document.catalog.Brand;
 import ua.tarasov.velesBase.document.extra.Error;
-import ua.tarasov.velesBase.repository.doc.catalog.BrandRepo;
+import ua.tarasov.velesBase.repository.catalog.BrandRepo;
 import ua.tarasov.velesBase.service.extra.ErrorService;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package ua.tarasov.velesBase.repository.doc.catalog;
+package ua.tarasov.velesBase.repository.catalog;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

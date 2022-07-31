@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.tarasov.velesBase.document.catalog.Client;
 import ua.tarasov.velesBase.document.extra.Error;
-import ua.tarasov.velesBase.repository.doc.catalog.ClientRepo;
+import ua.tarasov.velesBase.repository.catalog.ClientRepo;
 import ua.tarasov.velesBase.service.extra.ErrorService;
 
 import java.util.Arrays;

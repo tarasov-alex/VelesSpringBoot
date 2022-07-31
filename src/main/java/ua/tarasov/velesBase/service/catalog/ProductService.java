@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.tarasov.velesBase.document.catalog.Product;
 import ua.tarasov.velesBase.document.extra.Error;
-import ua.tarasov.velesBase.repository.doc.catalog.ProductRepo;
+import ua.tarasov.velesBase.repository.catalog.ProductRepo;
 import ua.tarasov.velesBase.service.extra.ErrorService;
 import ua.tarasov.velesBase.service.extra.ParamService;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 
 @Service
