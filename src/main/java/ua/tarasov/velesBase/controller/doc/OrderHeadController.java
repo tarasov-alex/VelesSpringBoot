@@ -45,12 +45,11 @@ public class OrderHeadController {
     public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
         try {
             if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
-           // StringBuilder text = new StringBuilder("DELETE FROM orders WHERE send = 0;│INSERT INTO orders ( date, find_name, guid, number, selling, send, kontr_guid, trade_guid, comment, summa, first_form, discount, summa_pay ) VALUES");
             StringBuilder text = new StringBuilder("INSERT INTO orders ( date, find_name, guid, number, selling, send, kontr_guid, trade_guid, comment, summa, first_form, discount, summa_pay ) VALUES");
             String comma = "";
             for (OrderHead obj : orderHeadService.giveAllByIdAgent(idAgent)) {
                 text.append(comma)
-                        .append(" ('").append(obj.getDate())
+                        .append(" ('").append(obj.getDate().getTime())
                         .append("', '").append(obj.getFindName())
                         .append("', '").append(obj.getIdDoc())
                         .append("', '").append(obj.getNumber())

@@ -2,17 +2,11 @@ package ua.tarasov.velesBase.service.doc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.tarasov.velesBase.document.doc.OrderHead;
 import ua.tarasov.velesBase.document.doc.OrderHeadTemp;
 import ua.tarasov.velesBase.document.extra.Error;
-import ua.tarasov.velesBase.model.UpdateObj;
 import ua.tarasov.velesBase.repository.doc.OrderHeadTempRepo;
 import ua.tarasov.velesBase.service.extra.ErrorService;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 
 @Service
 public class OrderHeadTempService {
@@ -51,4 +45,24 @@ public class OrderHeadTempService {
         }
     }
 
+    public boolean clearByAgent(String idAgent) {
+        try {
+            orderHeadTempRepo.deleteByIdAgent(idAgent);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/clearByAgent", e.getMessage(), new Date()));
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteAllByIdDoc(Iterable<String> ids) {
+        try {
+            orderHeadTempRepo.deleteAllById(ids);
+            return true;
+        }
+        catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/deleteAllByIdDoc", e.getMessage(), new Date()));
+            return false;
+        }
+    }
 }

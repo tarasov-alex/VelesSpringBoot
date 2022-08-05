@@ -12,6 +12,7 @@ public class Payment {
 
     @Id
     private String idDoc = "";
+    private String idDocCredit = "";
     private Date date;
     private String idAgent = "";
     private String idClient = "";

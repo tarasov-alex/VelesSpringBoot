@@ -51,7 +51,7 @@ public class ShopController {
             if (param.isEmpty()) shops = shopService.giveAll();
             else shops = shopService.giveAllById(param.get().getValue2());
 
-            StringBuilder text = new StringBuilder("DELETE FROM trade_points;│INSERT INTO trade_points ( guid, name, find_name, kontr_guid, phone, respite, city, active ) VALUES");
+            StringBuilder text = new StringBuilder("DELETE FROM trade_points;│INSERT INTO trade_points ( guid, name, find_name, kontr_guid, phone, respite, city, active, price_guid ) VALUES");
             String comma = "";
             for (Shop obj : shops) {
                 text.append(comma)
@@ -71,7 +71,9 @@ public class ShopController {
                         .append(obj.getCity())
                         .append("', ")
                         .append(obj.getActive())
-                        .append(")");
+                        .append(", '")
+                        .append(obj.getIdTypePrice())
+                        .append("')");
                 comma = ",";
             }
             return ResponseEntity.ok(text);

@@ -11,7 +11,7 @@ import java.util.Date;
 public class OrderProductTemp {
 
     @Id
-    private String genDocLine;
+    private String id;
     private String idDoc = "";
     private String idAgent = "";
     private String idProduct = "";

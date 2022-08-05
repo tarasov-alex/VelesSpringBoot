@@ -1,6 +1,7 @@
 package ua.tarasov.velesBase.service.catalog;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.tarasov.velesBase.document.catalog.TypePrice;
 import ua.tarasov.velesBase.document.extra.Error;
@@ -39,7 +40,7 @@ public class TypePriceService {
 
     public Iterable<TypePrice> giveAll() {
         try {
-            return typePriceRepo.findAll();
+            return typePriceRepo.findAll(Sort.by(Sort.Direction.ASC, "nameTypePrice"));
         }catch (Exception e){
             errorService.add(new Error(getClass().getSimpleName()+"/giveAll", e.getMessage(), new Date()));
             return null;

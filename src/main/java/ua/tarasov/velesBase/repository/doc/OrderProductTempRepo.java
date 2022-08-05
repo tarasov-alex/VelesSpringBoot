@@ -9,4 +9,6 @@ import ua.tarasov.velesBase.document.doc.OrderProductTemp;
 public interface OrderProductTempRepo extends MongoRepository<OrderProductTemp, String> {
 
     Iterable<OrderProductTemp> findByIdAgent(String idAgent);
+
+    void deleteByIdDocIn(Iterable<String> ids);
 }

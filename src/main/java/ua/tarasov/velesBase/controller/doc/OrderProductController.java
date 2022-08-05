@@ -43,7 +43,7 @@ public class OrderProductController {
     public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
         try {
             if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
-            StringBuilder text = new StringBuilder("DELETE FROM orders_line;│INSERT INTO orders_line ( order_guid, product_guid, amount, price, summa_pay ) VALUES");
+            StringBuilder text = new StringBuilder("INSERT INTO orders_line ( order_guid, product_guid, amount, price, summa_pay ) VALUES");
             String comma = "";
             for (OrderProduct obj : orderProductService.giveAllByIdAgent(idAgent)) {
                 text.append(comma)

@@ -14,6 +14,7 @@ public class Shop {
     private String idShop;
     private String idClient;
     private String idOrganisation;
+    private String idTypePrice;
     private String nameShop;
     private String phone;
     private String city;

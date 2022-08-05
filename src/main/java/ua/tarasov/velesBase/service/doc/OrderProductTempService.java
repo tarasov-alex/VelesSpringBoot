@@ -39,6 +39,16 @@ public class OrderProductTempService {
         return true;
     }
 
+    public boolean deleteByIdDocIn(Iterable<String> ids) {
+        try {
+            orderProductTempRepo.deleteByIdDocIn(ids);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/deleteByIdDocIn", e.getMessage(), new Date()));
+            return false;
+        }
+        return true;
+    }
+
     public Iterable<OrderProductTemp> giveAllByIdAgent(String idAgent) {
         try {
             return orderProductTempRepo.findByIdAgent(idAgent);

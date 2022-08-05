@@ -56,4 +56,15 @@ public class PaymentService {
             return null;
         }
     }
+
+    public boolean deleteAllByIdDoc(Iterable<String> ids) {
+        try {
+            paymentRepo.deleteAllById(ids);
+            return true;
+        }
+        catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/deleteAllByIdDoc", e.getMessage(), new Date()));
+            return false;
+        }
+    }
 }

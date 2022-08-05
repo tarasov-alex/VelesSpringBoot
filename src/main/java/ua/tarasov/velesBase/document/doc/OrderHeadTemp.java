@@ -20,6 +20,7 @@ public class OrderHeadTemp {
     private String idStore;
     private String idPriceType;
     private String comment;
+    private String gps;
     private int typePay;
     private int nonCash;
     private int useCert;

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface OrderHeadRepo extends MongoRepository<OrderHead, String> {
 
-  Iterable<OrderHead> findByIdAgent(String id_agent);
+  Iterable<OrderHead> findByIdAgent(String idAgent);
 
   Optional<OrderHead> findByIdDocAndDateUpdateGreaterThan(String idDoc, Date dateUpdate);
 

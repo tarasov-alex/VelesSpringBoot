@@ -43,24 +43,26 @@ public class OrderProductTempController {
     public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
         try {
             if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
-            StringBuilder text = new StringBuilder("DELETE FROM orders_line;│INSERT INTO orders_line ( order_guid, product_guid, amount, price, summa_pay ) VALUES");
-            String comma = "";
-            for (OrderProductTemp obj : orderProductTempService.giveAllByIdAgent(idAgent)) {
-                text.append(comma)
-                        .append(" ('").append(obj.getIdDoc())
-                        .append("', '").append(obj.getIdProduct())
-                        .append("', ").append(obj.getCount())
-                        .append(")");
-                comma = ",";
-            }
-            return ResponseEntity.ok(text);
+            return ResponseEntity.ok(orderProductTempService.giveAllByIdAgent(idAgent));
         } catch (Exception e) {
             errorService.add(new Error(getClass().getSimpleName()+"/giveAll", e.getMessage(), new Date()));
             return ResponseEntity.badRequest().body(MSG_ERROR);
         }
     }
 
-    @GetMapping("/clear")
+
+    @DeleteMapping("/deleteByIdDoc")
+    public ResponseEntity deleteByIdDoc(@RequestBody Iterable<String> ids, @RequestHeader("token") String token){
+        try{
+            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            return ResponseEntity.ok(orderProductTempService.deleteByIdDocIn(ids));
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/deleteByIdDoc", e.getMessage(), new Date()));
+            return ResponseEntity.badRequest().body(MSG_ERROR);
+        }
+    }
+
+    @DeleteMapping("/clear")
     public ResponseEntity clear(@RequestHeader("token") String token){
         try{
             if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
