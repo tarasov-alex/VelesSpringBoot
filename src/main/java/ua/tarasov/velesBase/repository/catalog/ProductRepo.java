@@ -7,6 +7,7 @@ import ua.tarasov.velesBase.document.catalog.Product;
 @Repository
 public interface ProductRepo extends MongoRepository<Product, String> {
 
- Iterable<Product> findByHeritageLike(String heritage);
+    Iterable<Product> findByHeritageLike(String heritage);
 
- }
+    Iterable<Product> findAllByIdOrganisation(String idOrganisation);
+}

@@ -55,4 +55,13 @@ public class ClientService {
             return null;
         }
     }
+
+    public Iterable<Client> giveAllOfOrganisation(String idOrganisation) {
+        try {
+            return clientRepo.findAllByIdOrganisation(idOrganisation);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
+            return null;
+        }
+    }
 }

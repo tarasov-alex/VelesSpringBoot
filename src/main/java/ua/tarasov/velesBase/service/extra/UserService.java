@@ -8,6 +8,7 @@ import ua.tarasov.velesBase.document.extra.User;
 import ua.tarasov.velesBase.repository.extra.UserRepo;
 
 import java.util.Date;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
@@ -48,7 +49,7 @@ public class UserService {
 
     public boolean checkUserByImei(String imei) {
         try {
-            return userRepo.findByImei(imei).isPresent();
+            return StreamSupport.stream(userRepo.findByImei(imei).spliterator(), false).findAny().isPresent();
         }catch (Exception e){
             errorService.add(new Error(getClass().getSimpleName()+"/giveAll", e.getMessage(), new Date()));
             return false;

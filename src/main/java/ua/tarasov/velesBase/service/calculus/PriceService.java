@@ -46,4 +46,13 @@ public class PriceService {
             return null;
         }
     }
+
+    public Iterable<Price> giveAllOfOrganisation(String idOrganisation) {
+        try {
+            return priceRepo.findAllByIdOrganisation(idOrganisation);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
+            return null;
+        }
+    }
 }

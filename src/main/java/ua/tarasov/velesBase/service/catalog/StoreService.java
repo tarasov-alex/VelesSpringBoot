@@ -45,4 +45,13 @@ public class StoreService {
             return null;
         }
     }
+
+    public Iterable<Store> giveAllOfOrganisation(String idOrganisation) {
+        try {
+            return storeRepo.findAllByIdOrganisation(idOrganisation);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
+            return null;
+        }
+    }
 }

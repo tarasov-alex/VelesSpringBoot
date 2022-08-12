@@ -31,9 +31,9 @@ public class ShopController {
     private static final String LABEL_SHOP = "shop_agent_";
 
     @PostMapping("/add")
-    public ResponseEntity addAll(@RequestBody Iterable<Shop> obs, @RequestHeader("token") String token) {
+    public ResponseEntity addAll(@RequestBody Iterable<Shop> obs, @RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(shopService.addAll(obs));
         } catch (Exception e) {
             errorService.add(new Error(getClass().getSimpleName()+"/addAll", e.getMessage(), new Date()));
@@ -41,17 +41,17 @@ public class ShopController {
         }
     }
 
-    @GetMapping("/give")
-    public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
+    @GetMapping("/giveAllOfOrganisation")
+    public ResponseEntity giveAllOfOrganisation(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
 
             Optional<Param> param = paramService.giveById(LABEL_SHOP + idAgent);
             Iterable<Shop> shops;
-            if (param.isEmpty()) shops = shopService.giveAll();
+            if (param.isEmpty()) shops = shopService.giveAllOfOrganisation(idOrganisation);
             else shops = shopService.giveAllById(param.get().getValue2());
 
-            StringBuilder text = new StringBuilder("DELETE FROM trade_points;│INSERT INTO trade_points ( guid, name, find_name, kontr_guid, phone, respite, city, active, price_guid ) VALUES");
+            StringBuilder text = new StringBuilder("DELETE FROM trade_points;│INSERT INTO trade_points ( guid, name, find_name, kontr_guid, phone, respite, city, active, type_price_guid ) VALUES");
             String comma = "";
             for (Shop obj : shops) {
                 text.append(comma)
@@ -78,15 +78,15 @@ public class ShopController {
             }
             return ResponseEntity.ok(text);
         } catch (Exception e) {
-            errorService.add(new Error(getClass().getSimpleName()+"/giveAll", e.getMessage(), new Date()));
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
             return ResponseEntity.badRequest().body(MSG_ERROR);
         }
     }
 
     @GetMapping("/clear")
-    public ResponseEntity clear(@RequestHeader("token") String token){
+    public ResponseEntity clear(@RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation){
         try{
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(shopService.clear());
         }catch (Exception e){
             errorService.add(new Error(getClass().getSimpleName()+"/clear", e.getMessage(), new Date()));

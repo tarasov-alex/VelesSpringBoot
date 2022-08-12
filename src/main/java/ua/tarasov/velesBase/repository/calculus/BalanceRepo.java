@@ -7,4 +7,5 @@ import ua.tarasov.velesBase.document.calculus.Balance;
 @Repository
 public interface BalanceRepo extends MongoRepository<Balance, String> {
 
- }
+    Iterable<Balance> findAllByIdOrganisation(String idOrganisation);
+}

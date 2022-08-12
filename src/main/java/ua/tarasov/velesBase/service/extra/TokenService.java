@@ -8,6 +8,7 @@ import ua.tarasov.velesBase.document.extra.Token;
 import ua.tarasov.velesBase.repository.extra.TokenRepo;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class TokenService {
@@ -32,7 +33,7 @@ public class TokenService {
     }
 
     //Проверка существования токена
-    public Boolean checkToken(String token){
+    public Boolean checkToken(String token, String idOrganisation){
         try {
             //Находим токен в таблице токенов
             Token check_token = tokenRepo.findByToken(token);
@@ -42,11 +43,15 @@ public class TokenService {
                 //на 60000, чтобы получить минуты
                 long sec = ((new Date()).getTime() - check_token.getDate().getTime()) / 60000;
                 //Получаем параметр, сколько должен действовать токен
-                Param time_life_token = paramService.giveOne(TIME_LIFE_TOKEN);
+                Optional<Param> time_life_token = paramService.giveOneParam(TIME_LIFE_TOKEN+"_"+idOrganisation);
                 //Если нет такого параметра, по умолчанию 5 минут
-                if (time_life_token == null) return sec < 10;
+                if (time_life_token.isEmpty()) return sec < 10;
                 //Если есть, преобразуем в число и сравниваем
-                else return sec < Integer.parseInt(time_life_token.getValue1());
+                else {
+                    check_token.setDate(new Date(check_token.getDate().getTime() + 60000));
+                    tokenRepo.save(check_token);
+                    return sec < Integer.parseInt(time_life_token.get().getValue1());
+                }
             }
         } catch (Exception e) {
             errorService.add(new Error(getClass().getSimpleName() + "/checkToken", e.getMessage(), new Date()));

@@ -46,11 +46,11 @@ public class ParamService {
         }
     }
 
-    public Param giveOne(String nameParam) {
+    public Optional<Param> giveOneParam(String nameParam) {
         try {
-            return paramRepo.findByNameParam(nameParam);
+            return paramRepo.findById(nameParam);
         }catch (Exception e){
-            errorService.add(new Error(getClass().getSimpleName()+"/giveOne", e.getMessage(), new Date()));
+            errorService.add(new Error(getClass().getSimpleName()+"/giveOneParam", e.getMessage(), new Date()));
             return null;
         }
     }

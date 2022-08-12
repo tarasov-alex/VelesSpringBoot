@@ -32,10 +32,10 @@ public class UserController {
 
 
     @PostMapping("/add")
-    public ResponseEntity addAll(@RequestBody Iterable<User> obs, @RequestHeader("token") String token, @RequestHeader("master_key") String keyClient) {
+    public ResponseEntity addAll(@RequestBody Iterable<User> obs, @RequestHeader("token") String token, @RequestHeader("master_key") String keyClient, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
             if (!keyServer.equals(keyClient)) {
-                if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+                if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             }
             return ResponseEntity.ok(userService.addAll(obs));
         } catch (Exception e) {
@@ -45,10 +45,10 @@ public class UserController {
     }
 
     @GetMapping("/clear")
-    public ResponseEntity clear(@RequestHeader("token") String token, @RequestHeader("master_key") String keyClient){
+    public ResponseEntity clear(@RequestHeader("token") String token, @RequestHeader("master_key") String keyClient, @RequestHeader("idOrganisation") String idOrganisation){
         try{
             if (!keyServer.equals(keyClient)) {
-                if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+                if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             }
             return ResponseEntity.ok(userService.clear());
         }catch (Exception e){

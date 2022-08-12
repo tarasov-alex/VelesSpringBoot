@@ -46,4 +46,13 @@ public class TypePriceService {
             return null;
         }
     }
+
+    public Iterable<TypePrice> giveAllOfOrganisation(String idOrganisation) {
+        try {
+            return typePriceRepo.findAllByIdOrganisation(idOrganisation);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
+            return null;
+        }
+    }
 }

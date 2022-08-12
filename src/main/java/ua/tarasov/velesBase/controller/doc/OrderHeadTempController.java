@@ -30,9 +30,9 @@ public class OrderHeadTempController {
 
 
     @PostMapping("/add")
-    public ResponseEntity addAll(@RequestBody Iterable<OrderHeadTemp> obs, @RequestHeader("token") String token) {
+    public ResponseEntity addAll(@RequestBody Iterable<OrderHeadTemp> obs, @RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(orderHeadTempService.addAll(obs));
         } catch (Exception e) {
             errorService.add(new Error(getClass().getSimpleName()+"/addAll", e.getMessage(), new Date()));
@@ -40,21 +40,21 @@ public class OrderHeadTempController {
         }
     }
 
-    @GetMapping("/give")
-    public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
+    @GetMapping("/giveAllOfOrganisation")
+    public ResponseEntity giveAllOfOrganisation(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(orderHeadTempService.giveAllByIdAgent(idAgent));
         } catch (Exception e) {
-            errorService.add(new Error(getClass().getSimpleName()+"/giveAll", e.getMessage(), new Date()));
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
             return ResponseEntity.badRequest().body(MSG_ERROR);
         }
     }
 
     @DeleteMapping("/deleteByIdDoc")
-    public ResponseEntity deleteByIdDoc(@RequestBody Iterable<String> ids, @RequestHeader("token") String token){
+    public ResponseEntity deleteByIdDoc(@RequestBody Iterable<String> ids, @RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation){
         try{
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(orderHeadTempService.deleteAllByIdDoc(ids));
         }catch (Exception e){
             errorService.add(new Error(getClass().getSimpleName()+"/deleteByIdDoc", e.getMessage(), new Date()));
@@ -63,10 +63,10 @@ public class OrderHeadTempController {
     }
 
     @DeleteMapping("/clearAll")
-    public ResponseEntity clearAll(@RequestHeader("token") String token, @RequestHeader("master_key") String keyClient){
+    public ResponseEntity clearAll(@RequestHeader("token") String token, @RequestHeader("master_key") String keyClient, @RequestHeader("idOrganisation") String idOrganisation){
         try{
             if (!keyServer.equals(keyClient)) {
-                if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+                if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             }
             return ResponseEntity.ok(orderHeadTempService.clear());
         }catch (Exception e){
@@ -78,7 +78,7 @@ public class OrderHeadTempController {
 //    @PostMapping("/getListUpdate")
 //    public ResponseEntity giveNotUpdate(@RequestBody Iterable<UpdateObj> obs, @RequestHeader("token") String token){
 //        try{
-//            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+//            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
 //            return ResponseEntity.ok(orderHeadService.giveListNotUpdateDoc(obs));
 //        }catch (Exception e){
 //            errorService.add(new Error(getClass().getSimpleName()+"/clear", e.getMessage(), new Date()));

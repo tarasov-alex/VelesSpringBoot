@@ -45,4 +45,13 @@ public class UnitService {
             return null;
         }
     }
+
+    public Iterable<Unit> giveAllOfOrganisation(String idOrganisation) {
+        try {
+            return unitRepo.findAllByIdOrganisation(idOrganisation);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
+            return null;
+        }
+    }
 }

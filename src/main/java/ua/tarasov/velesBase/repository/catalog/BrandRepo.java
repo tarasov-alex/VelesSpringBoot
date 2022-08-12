@@ -7,4 +7,5 @@ import ua.tarasov.velesBase.document.catalog.Brand;
 @Repository
 public interface BrandRepo extends MongoRepository<Brand, String> {
 
- }
+    Iterable<Brand> findAllByIdOrganisation(String idOrganisation);
+}

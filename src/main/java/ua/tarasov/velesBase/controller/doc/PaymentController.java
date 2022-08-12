@@ -25,29 +25,29 @@ public class PaymentController {
     private static final String MSG_ERROR = "ERROR";
 
     @PostMapping("/add")
-    public ResponseEntity addAll(@RequestBody Iterable<Payment> obs, @RequestHeader("token") String token) {
+    public ResponseEntity addAll(@RequestBody Iterable<Payment> obs, @RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(paymentService.addAll(obs));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(writeError("addAll", e));
         }
     }
 
-    @GetMapping("/give")
-    public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
+    @GetMapping("/giveAllOfOrganisation")
+    public ResponseEntity giveAllOfOrganisation(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(paymentService.giveAllByIdAgent(idAgent));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(writeError("giveAll", e));
+            return ResponseEntity.badRequest().body(writeError("giveAllOfOrganisation", e));
         }
     }
 
     @DeleteMapping("/deleteByIdDoc")
-    public ResponseEntity deleteByIdDoc(@RequestBody Iterable<String> ids, @RequestHeader("token") String token){
+    public ResponseEntity deleteByIdDoc(@RequestBody Iterable<String> ids, @RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation){
         try{
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(paymentService.deleteAllByIdDoc(ids));
         }catch (Exception e){
             errorService.add(new Error(getClass().getSimpleName()+"/deleteByIdDoc", e.getMessage(), new Date()));
@@ -56,9 +56,9 @@ public class PaymentController {
     }
 
     @DeleteMapping("/clear")
-    public ResponseEntity clear(@RequestHeader("token") String token){
+    public ResponseEntity clear(@RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation){
         try{
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(paymentService.clear());
         }catch (Exception e){
             return ResponseEntity.badRequest().body(writeError("clear", e));

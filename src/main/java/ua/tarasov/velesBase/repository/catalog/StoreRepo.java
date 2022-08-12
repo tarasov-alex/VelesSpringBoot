@@ -7,4 +7,5 @@ import ua.tarasov.velesBase.document.catalog.Store;
 @Repository
 public interface StoreRepo extends MongoRepository<Store, String> {
 
- }
+    Iterable<Store> findAllByIdOrganisation(String idOrganisation);
+}

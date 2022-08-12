@@ -45,4 +45,13 @@ public class BrandService {
             return null;
         }
     }
+
+    public Iterable<Brand> giveAllOfOrganisation(String idOrganisation) {
+        try {
+            return brandRepo.findAllByIdOrganisation(idOrganisation);
+        }catch (Exception e){
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
+            return null;
+        }
+    }
 }

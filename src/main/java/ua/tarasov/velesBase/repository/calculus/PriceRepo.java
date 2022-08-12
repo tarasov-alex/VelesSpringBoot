@@ -7,4 +7,5 @@ import ua.tarasov.velesBase.document.calculus.Price;
 @Repository
 public interface PriceRepo extends MongoRepository<Price, String> {
 
- }
+    Iterable<Price> findAllByIdOrganisation(String idOrganisation);
+}

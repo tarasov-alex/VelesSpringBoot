@@ -33,9 +33,9 @@ public class ProductController {
     private static final String LABEL_PRODUCT = "product_agent_";
 
     @PostMapping("/add")
-    public ResponseEntity addAll(@RequestBody Iterable<Product> obs, @RequestHeader("token") String token) {
+    public ResponseEntity addAll(@RequestBody Iterable<Product> obs, @RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(productService.addAll(obs));
         } catch (Exception e) {
             errorService.add(new Error(getClass().getSimpleName()+"/addAll", e.getMessage(), new Date()));
@@ -43,10 +43,10 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/give")
-    public ResponseEntity giveAll(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent) {
+    @GetMapping("/giveAllOfOrganisation")
+    public ResponseEntity giveAllOfOrganisation(@RequestHeader("token") String token, @RequestHeader("idAgent") String idAgent, @RequestHeader("idOrganisation") String idOrganisation) {
         try {
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
 
             Optional<Param> param = paramService.giveById(LABEL_PRODUCT + idAgent);
             List<Product> products;
@@ -54,7 +54,7 @@ public class ProductController {
             Iterable<Product> productsTemp;
             HashSet<Product> hashSet = new HashSet<>();
 
-            if (param.isEmpty()) products = StreamSupport.stream(productService.giveAll().spliterator(), false)
+            if (param.isEmpty()) products = StreamSupport.stream(productService.giveAllOfOrganisation(idOrganisation).spliterator(), false)
                     .collect(Collectors.toList());
             else{
                 productsHead = productService.giveAllById(param.get().getValue2());
@@ -92,15 +92,15 @@ public class ProductController {
             }
             return ResponseEntity.ok(text);
         } catch (Exception e) {
-            errorService.add(new Error(getClass().getSimpleName()+"/giveAll", e.getMessage(), new Date()));
+            errorService.add(new Error(getClass().getSimpleName()+"/giveAllOfOrganisation", e.getMessage(), new Date()));
             return ResponseEntity.badRequest().body(MSG_ERROR);
         }
     }
 
     @GetMapping("/clear")
-    public ResponseEntity clear(@RequestHeader("token") String token){
+    public ResponseEntity clear(@RequestHeader("token") String token, @RequestHeader("idOrganisation") String idOrganisation){
         try{
-            if (!tokenService.checkToken(token)) return ResponseEntity.badRequest().body("BAD TOKEN");
+            if (!tokenService.checkToken(token,idOrganisation)) return ResponseEntity.badRequest().body("BAD TOKEN");
             return ResponseEntity.ok(productService.clear());
         }catch (Exception e){
             errorService.add(new Error(getClass().getSimpleName()+"/clear", e.getMessage(), new Date()));
